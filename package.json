@@ -1,10 +1,9 @@
 {
   "name": "split-string-on-enter",
   "main": "./lib/split-string-on-enter",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Split a string into multiple concatenated strings at the cursor position when typing enter.",
-  "keywords": [
-  ],
+  "keywords": [],
   "activationCommands": {
     "atom-workspace": "split-string-on-enter:split"
   },
@@ -13,6 +12,5 @@
   "engines": {
     "atom": ">=1.0.0 <2.0.0"
   },
-  "dependencies": {
-  }
+  "dependencies": {}
 }
