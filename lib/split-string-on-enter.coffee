@@ -52,14 +52,12 @@ module.exports = SplitStringOnEnter =
         scope: editor.getLastCursor().getScopeDescriptor()
       )
 
-      if getScopesAtPos(editor, bufferPosition).some((s) -> scopesToIgnore.indexOf(s) != -1)
+      scopes = getScopesAtPos(editor, bufferPosition)
+      if scopes.some((s) -> scopesToIgnore.indexOf(s) != -1)
         event.abortKeyBinding()
         return
 
-      connector = atom.config.get(
-        'split-string-on-enter.connector',
-        scope: editor.getLastCursor().getScopeDescriptor()
-      )
+      connector = @getConnector(editor, scopes)
 
       leadingSpace = line.match(/^\s*/)[0];
       if stringType == 'single'
@@ -68,6 +66,23 @@ module.exports = SplitStringOnEnter =
         editor.insertText('"' + connector + '\n' + leadingSpace + '"')
     else
       event.abortKeyBinding()
+
+  getConnector: (editor, scopes) ->
+    connector = atom.config.get(
+      'split-string-on-enter.connector',
+      scope: editor.getLastCursor().getScopeDescriptor()
+    )
+
+    # So everyone doesn't have to add this to their config.cson:
+    # ".hack.source":
+    #   "split-string-on-enter":
+    #     connector: "."
+    isDefault = connector == @config.connector.default
+    scopesWithDot = ['source.hack', 'source.php']
+    if isDefault && scopes.some((s) -> scopesWithDot.indexOf(s) != -1)
+      connector = '.'
+
+    connector
 
 getScopesAtPos = (editor, pos) ->
   editor.scopeDescriptorForBufferPosition(pos).getScopesArray()
