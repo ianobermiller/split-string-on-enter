@@ -35,29 +35,27 @@ module.exports = SplitStringOnEnter =
       event.abortKeyBinding()
       return
 
+    @editor = editor
+
     bufferPosition = editor.getCursorBufferPosition()
     line = editor.lineTextForBufferRow(bufferPosition.row)
     isBeginningOfLine = bufferPosition.column == 0
     isEndOfLine = bufferPosition.column == line.length
-    stringType = getStringTypeAtPosition(editor, bufferPosition)
-    previousStringType = !isBeginningOfLine && getStringTypeAtPosition(
-      editor,
+    stringType = @getStringTypeAtPosition(bufferPosition)
+    previousStringType = !isBeginningOfLine && @getStringTypeAtPosition(
       {column: bufferPosition.column - 1, row: bufferPosition.row}
     )
 
     if stringType && !isBeginningOfLine && !isEndOfLine && previousStringType == stringType
 
-      scopesToIgnore = atom.config.get(
-        'split-string-on-enter.scopesToIgnore',
-        scope: editor.getLastCursor().getScopeDescriptor()
-      )
+      scopesToIgnore = @getConfig('scopesToIgnore')
 
-      scopes = getScopesAtPos(editor, bufferPosition)
+      scopes = @getScopesAtPos(bufferPosition)
       if scopes.some((s) -> scopesToIgnore.indexOf(s) != -1)
         event.abortKeyBinding()
         return
 
-      connector = @getConnector(editor, scopes)
+      connector = @getConnector(scopes)
 
       leadingSpace = line.match(/^\s*/)[0];
       if stringType == 'single'
@@ -67,11 +65,13 @@ module.exports = SplitStringOnEnter =
     else
       event.abortKeyBinding()
 
-  getConnector: (editor, scopes) ->
-    connector = atom.config.get(
-      'split-string-on-enter.connector',
-      scope: editor.getLastCursor().getScopeDescriptor()
-    )
+  getConfig: (name) -> atom.config.get(
+    'split-string-on-enter.' + name,
+    scope: @editor.getLastCursor().getScopeDescriptor()
+  )
+
+  getConnector: (scopes) ->
+    connector = @getConfig('connector')
 
     # So everyone doesn't have to add this to their config.cson:
     # ".hack.source":
@@ -84,10 +84,10 @@ module.exports = SplitStringOnEnter =
 
     connector
 
-getScopesAtPos = (editor, pos) ->
-  editor.scopeDescriptorForBufferPosition(pos).getScopesArray()
+  getScopesAtPos: (pos) ->
+    @editor.scopeDescriptorForBufferPosition(pos).getScopesArray()
 
-getStringTypeAtPosition = (editor, pos) ->
-  scopes = getScopesAtPos(editor, pos)
-  return 'single' if scopes.some((s) -> s.startsWith('string.quoted.single'))
-  return 'double' if scopes.some((s) -> s.startsWith('string.quoted.double'))
+  getStringTypeAtPosition: (pos) ->
+    scopes = @getScopesAtPos(pos)
+    return 'single' if scopes.some((s) -> s.startsWith('string.quoted.single'))
+    return 'double' if scopes.some((s) -> s.startsWith('string.quoted.double'))
