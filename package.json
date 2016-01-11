@@ -1,0 +1,18 @@
+{
+  "name": "split-string-on-enter",
+  "main": "./lib/split-string-on-enter",
+  "version": "0.0.0",
+  "description": "A short description of your package",
+  "keywords": [
+  ],
+  "activationCommands": {
+    "atom-workspace": "split-string-on-enter:split"
+  },
+  "repository": "https://github.com/atom/split-string-on-enter",
+  "license": "MIT",
+  "engines": {
+    "atom": ">=1.0.0 <2.0.0"
+  },
+  "dependencies": {
+  }
+}

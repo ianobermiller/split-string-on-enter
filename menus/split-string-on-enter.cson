@@ -1,0 +1,14 @@
+'menu': [
+  {
+    'label': 'Packages'
+    'submenu': [
+      'label': 'split-string-on-enter'
+      'submenu': [
+        {
+          'label': 'Split String at Cursor'
+          'command': 'split-string-on-enter:split'
+        }
+      ]
+    ]
+  }
+]

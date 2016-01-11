@@ -1,0 +1,2 @@
+'atom-workspace atom-text-editor:not([mini])':
+  'enter': 'split-string-on-enter:split'
