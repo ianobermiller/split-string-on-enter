@@ -2,6 +2,13 @@
 
 module.exports = SplitStringOnEnter =
   config:
+    scopesToIgnore:
+      type: 'array'
+      items:
+        type: 'string'
+      default: ['meta.tag.jsx']
+      title: 'Scopes to Ignore'
+      description: 'Don\'t split the string when inside this scope.'
     connector:
       type: 'string'
       default: ' +'
@@ -22,9 +29,11 @@ module.exports = SplitStringOnEnter =
   splitString: (e) ->
     if !(editor = atom.workspace.getActiveTextEditor())
       event.abortKeyBinding()
+      return
 
     if editor.hasMultipleCursors()
       event.abortKeyBinding()
+      return
 
     bufferPosition = editor.getCursorBufferPosition()
     line = editor.lineTextForBufferRow(bufferPosition.row)
@@ -37,10 +46,21 @@ module.exports = SplitStringOnEnter =
     )
 
     if stringType && !isBeginningOfLine && !isEndOfLine && previousStringType == stringType
+
+      scopesToIgnore = atom.config.get(
+        'split-string-on-enter.scopesToIgnore',
+        scope: editor.getLastCursor().getScopeDescriptor()
+      )
+
+      if getScopesAtPos(editor, bufferPosition).some((s) -> scopesToIgnore.indexOf(s) != -1)
+        event.abortKeyBinding()
+        return
+
       connector = atom.config.get(
         'split-string-on-enter.connector',
         scope: editor.getLastCursor().getScopeDescriptor()
       )
+
       leadingSpace = line.match(/^\s*/)[0];
       if stringType == 'single'
         editor.insertText('\'' + connector + '\n' + leadingSpace + '\'')
@@ -49,7 +69,10 @@ module.exports = SplitStringOnEnter =
     else
       event.abortKeyBinding()
 
+getScopesAtPos = (editor, pos) ->
+  editor.scopeDescriptorForBufferPosition(pos).getScopesArray()
+
 getStringTypeAtPosition = (editor, pos) ->
-  scopes = editor.scopeDescriptorForBufferPosition(pos).getScopesArray()
+  scopes = getScopesAtPos(editor, pos)
   return 'single' if scopes.some((s) -> s.startsWith('string.quoted.single'))
   return 'double' if scopes.some((s) -> s.startsWith('string.quoted.double'))
