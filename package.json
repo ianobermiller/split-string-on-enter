@@ -8,7 +8,7 @@
   "activationCommands": {
     "atom-workspace": "split-string-on-enter:split"
   },
-  "repository": "https://github.com/atom/split-string-on-enter",
+  "repository": "https://github.com/ianobermiller/split-string-on-enter",
   "license": "MIT",
   "engines": {
     "atom": ">=1.0.0 <2.0.0"
