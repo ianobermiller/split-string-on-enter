@@ -2,4 +2,4 @@
 
 Split a string into multiple concatenated strings at the cursor position when typing enter.
 
-![Animated screenshot of Split String on Enter](split-string-on-enter.gif)
+![Animated screenshot of Split String on Enter]( https://github.com/ianobermiller/split-string-on-enter/raw/master/split-string-on-enter.gif)
