@@ -1,5 +1,5 @@
-# split-string-on-enter package
+# split-string-on-enter
 
-A short description of your package.
+Split a string into multiple concatenated strings at the cursor position when typing enter.
 
-![A screenshot of your package](https://f.cloud.github.com/assets/69169/2290250/c35d867a-a017-11e3-86be-cd7c5bf3ff9b.gif)
+![Animated screenshot of Split String on Enter](split-string-on-enter.gif)

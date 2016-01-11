@@ -2,7 +2,7 @@
   "name": "split-string-on-enter",
   "main": "./lib/split-string-on-enter",
   "version": "1.0.0",
-  "description": "Split a string into multiple concatenated strings at the cursor position when pressing enter.",
+  "description": "Split a string into multiple concatenated strings at the cursor position when typing enter.",
   "keywords": [
   ],
   "activationCommands": {
