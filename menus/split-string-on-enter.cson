@@ -2,7 +2,7 @@
   {
     'label': 'Packages'
     'submenu': [
-      'label': 'split-string-on-enter'
+      'label': 'Split String on Enter'
       'submenu': [
         {
           'label': 'Split String at Cursor'
